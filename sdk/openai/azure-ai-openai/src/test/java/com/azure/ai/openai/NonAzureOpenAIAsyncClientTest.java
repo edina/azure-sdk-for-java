@@ -9,6 +9,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.Moderation;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -229,4 +230,30 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verifyComplete();
         });
     }
-}
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetModerations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getModerationsNonAzureRunner((modelId, moderationsOptions) -> {
+            StepVerifier.create(client.getModerations(modelId, moderationsOptions))
+                .assertNext(moderationsEmbeddings -> assertModerations(moderationsEmbeddings))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetModerationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getModerationsNonAzureRunner((modelId, moderationOptions) -> {
+            StepVerifier.create(client.getModerationsWithResponse(modelId,
+                    BinaryData.fromObject(moderationOptions),
+                    new RequestOptions()))
+                .assertNext(response -> {
+                    Moderation resultModerations = assertAndGetValueFromResponse(response, Moderation.class, 200);
+                    assertModerations(resultModerations);
+                })
+                .verifyComplete();
+        });
+    }}

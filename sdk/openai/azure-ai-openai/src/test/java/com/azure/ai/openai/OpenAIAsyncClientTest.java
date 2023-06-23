@@ -217,4 +217,14 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verifyComplete();
         });
     }
+
+    @Override
+    public void testGetModerations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        // Adding stubs as Azure OpenAI doesn't suppport the Moderations API
+    }
+
+    @Override
+    public void testGetModerationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        // Adding stubs as Azure OpenAI doesn't suppport the Moderations API
+    }
 }

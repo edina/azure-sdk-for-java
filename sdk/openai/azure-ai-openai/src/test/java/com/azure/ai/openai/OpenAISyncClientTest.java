@@ -175,4 +175,14 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertEmbeddings(resultEmbeddings);
         });
     }
+
+    @Override
+    public void testGetModerations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        // Adding stubs as Azure OpenAI doesn't suppport the Moderations API
+    }
+
+    @Override
+    public void testGetModerationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        // Adding stubs as Azure OpenAI doesn't suppport the Moderations API
+    }
 }

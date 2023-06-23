@@ -9,6 +9,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.Moderation;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -185,6 +186,28 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
             Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
             assertEmbeddings(resultEmbeddings);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetModerations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getModerationsNonAzureRunner((deploymentId, moderationOptions) -> {
+            Moderation resultModerations = client.getModerations(deploymentId, moderationOptions);
+            assertModerations(resultModerations);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetModerationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getModerationsNonAzureRunner((deploymentId, moderationOptions) -> {
+            Response<BinaryData> response = client.getModerationsWithResponse(deploymentId,
+                BinaryData.fromObject(moderationOptions), new RequestOptions());
+            Moderation resultModerations = assertAndGetValueFromResponse(response, Moderation.class, 200);
+            assertModerations(resultModerations);
         });
     }
 }

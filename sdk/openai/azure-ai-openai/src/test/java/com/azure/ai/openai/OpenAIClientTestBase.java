@@ -13,6 +13,9 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.Moderation;
+import com.azure.ai.openai.models.ModerationOptions;
+import com.azure.ai.openai.models.ModerationResults;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -28,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 import static com.azure.ai.openai.TestUtils.FAKE_API_KEY;
@@ -100,6 +104,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
+    @Test
+    public abstract void testGetModerations(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetModerationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
     void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
         String deploymentId = "text-davinci-003";
         List<String> prompt = new ArrayList<>();
@@ -127,6 +137,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getModerationsNonAzureRunner(BiConsumer<String, ModerationOptions> testRunner) {
+        testRunner.accept("text-moderation-latest", new ModerationOptions(Arrays.asList("Your text string goes here")));
     }
 
     private List<ChatMessage> getChatMessages() {
@@ -231,5 +245,26 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             assertTrue(embedding.size() > 0);
         }
         assertNotNull(actual.getUsage());
+    }
+
+    static void assertModerations(Moderation actual) {
+        assertNotNull(actual.getId());
+        assertNotNull(actual.getModel());
+
+        List<ModerationResults> results = actual.getResults();
+        assertNotNull(results);
+        assertTrue(results.size() > 0);
+
+        for (ModerationResults item : results) {
+            assertNotNull(item.getFlagged());
+
+            Map<String, Boolean> categories = item.getCategories();
+            assertNotNull(categories);
+            assertTrue(categories.size() > 0);
+
+            Map<String, Double> scores = item.getCategoryScores();
+            assertNotNull(scores);
+            assertTrue(scores.size() > 0);
+        }
     }
 }
