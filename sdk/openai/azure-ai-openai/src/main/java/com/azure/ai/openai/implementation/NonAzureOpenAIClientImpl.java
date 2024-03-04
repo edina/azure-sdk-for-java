@@ -65,7 +65,7 @@ public final class NonAzureOpenAIClientImpl {
     /**
      * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
      */
-    public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
+    public static String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
 
     /**
      * Initializes an instance of OpenAIClient client.
