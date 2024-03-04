@@ -337,6 +337,55 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         return client;
     }
 
+    private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient(String newEndpoint) {
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
+        NonAzureOpenAIClientImpl client =
+                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+        NonAzureOpenAIClientImpl.OPEN_AI_ENDPOINT = newEndpoint;
+        return client;
+    }
+
+    private HttpPipeline createHttpPipelineNonAzureOpenAI() {
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        policies.add(new CookiePolicy());
+        if (nonAzureOpenAIKeyCredential != null) {
+            policies.add(new NonAzureOpenAIKeyCredentialPolicy("Authorization", nonAzureOpenAIKeyCredential, "Bearer"));
+        }
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .clientOptions(localClientOptions)
+                        .build();
+        return httpPipeline;
+    }
+
     /**
      * Builds an instance of OpenAIAsyncClient class.
      *
@@ -357,6 +406,19 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         return useNonAzureOpenAIService()
             ? new OpenAIClient(buildInnerNonAzureOpenAIClient())
             : new OpenAIClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of OpenAIClient class.
+     *
+     * @param newEndpoint endpoint to override
+     * @return an instance of OpenAIClient.
+     */
+    public OpenAIClient buildClient(String newEndpoint) {
+        if (nonAzureOpenAIKeyCredential != null) {
+            return new OpenAIClient(buildInnerNonAzureOpenAIClient(newEndpoint));
+        }
+        return new OpenAIClient(buildInnerClient());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientBuilder.class);
