@@ -317,6 +317,14 @@ public final class OpenAIClientBuilder
         return client;
     }
 
+    private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient(String newEndpoint) {
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
+        NonAzureOpenAIClientImpl client =
+                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+        NonAzureOpenAIClientImpl.OPEN_AI_ENDPOINT = newEndpoint;
+        return client;
+    }
+
     private HttpPipeline createHttpPipelineNonAzureOpenAI() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -378,6 +386,19 @@ public final class OpenAIClientBuilder
     public OpenAIClient buildClient() {
         if (nonAzureOpenAIKeyCredential != null) {
             return new OpenAIClient(buildInnerNonAzureOpenAIClient());
+        }
+        return new OpenAIClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of OpenAIClient class.
+     *
+     * @param newEndpoint endpoint to override
+     * @return an instance of OpenAIClient.
+     */
+    public OpenAIClient buildClient(String newEndpoint) {
+        if (nonAzureOpenAIKeyCredential != null) {
+            return new OpenAIClient(buildInnerNonAzureOpenAIClient(newEndpoint));
         }
         return new OpenAIClient(buildInnerClient());
     }
