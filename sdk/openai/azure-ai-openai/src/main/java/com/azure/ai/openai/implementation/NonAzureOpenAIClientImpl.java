@@ -65,7 +65,7 @@ public final class NonAzureOpenAIClientImpl {
     /**
      * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
      */
-    public static String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
+    private final String openAiEndpoint;
 
     /**
      * Initializes an instance of OpenAIClient client.
@@ -77,6 +77,14 @@ public final class NonAzureOpenAIClientImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.openAiEndpoint = "https://api.openai.com/v1";
+    }
+
+    public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String openAIEndpoint) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.openAiEndpoint = openAIEndpoint;
     }
 
     /**
@@ -299,7 +307,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
             context ->
                 service.getEmbeddings(
-                    OPEN_AI_ENDPOINT,
+                    openAiEndpoint,
                     accept,
                     embeddingsOptionsUpdated,
                     requestOptions,
@@ -365,7 +373,7 @@ public final class NonAzureOpenAIClientImpl {
         );
 
         return service.getEmbeddingsSync(
-            OPEN_AI_ENDPOINT,
+            openAiEndpoint,
             accept,
             embeddingsOptionsUpdated,
             requestOptions,
@@ -468,7 +476,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
             context ->
                 service.getCompletions(
-                    OPEN_AI_ENDPOINT,
+                    openAiEndpoint,
                     accept,
                     completionsOptionsUpdated,
                     requestOptions,
@@ -566,7 +574,7 @@ public final class NonAzureOpenAIClientImpl {
                 .setModel(modelId)
         );
         return service.getCompletionsSync(
-            OPEN_AI_ENDPOINT,
+            openAiEndpoint,
             accept,
             completionsOptionsUpdated,
             requestOptions,
@@ -660,7 +668,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
             context ->
                 service.getChatCompletions(
-                    OPEN_AI_ENDPOINT,
+                    openAiEndpoint,
                     accept,
                     chatCompletionsOptionsUpdated,
                     requestOptions,
@@ -751,7 +759,7 @@ public final class NonAzureOpenAIClientImpl {
         );
 
         return service.getChatCompletionsSync(
-            OPEN_AI_ENDPOINT,
+            openAiEndpoint,
             accept,
             chatCompletionsOptionsUpdated,
             requestOptions,
@@ -837,7 +845,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
             context ->
                 service.getModerations(
-                    OPEN_AI_ENDPOINT,
+                    openAiEndpoint,
                     accept,
                     moderationsOptionsUpdated,
                     requestOptions,
@@ -922,7 +930,7 @@ public final class NonAzureOpenAIClientImpl {
         );
 
         return service.getModerationsSync(
-            OPEN_AI_ENDPOINT,
+            openAiEndpoint,
             accept,
             moderationOptionsUpdated,
             requestOptions,

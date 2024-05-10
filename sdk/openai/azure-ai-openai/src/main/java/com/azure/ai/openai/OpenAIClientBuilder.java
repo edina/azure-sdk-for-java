@@ -320,8 +320,7 @@ public final class OpenAIClientBuilder
     private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient(String newEndpoint) {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
         NonAzureOpenAIClientImpl client =
-                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
-        NonAzureOpenAIClientImpl.OPEN_AI_ENDPOINT = newEndpoint;
+                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), newEndpoint);
         return client;
     }
 
