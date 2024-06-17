@@ -38,12 +38,20 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
     /*
      * Input texts to get embeddings for, encoded as a an array of strings.
      * Each input must not exceed 2048 tokens in length.
-     * 
+     *
      * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space,
      * as we have observed inferior results when newlines are present.
      */
     @Generated
     private final List<String> input;
+
+    /*
+     * Number of dimensions the resulting output embeddings should have.
+     * Only works for text-embedding-3 and later models.
+     */
+    @Generated
+    @JsonProperty(value = "dimensions")
+    private Integer dimensions;
 
     /**
      * Creates an instance of EmbeddingsOptions class.
