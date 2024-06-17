@@ -44,6 +44,14 @@ public final class EmbeddingsOptions {
     @JsonProperty(value = "input")
     private List<String> input;
 
+    /*
+     * Number of dimensions the resulting output embeddings should have.
+     * Only works for text-embedding-3 and later models.
+     */
+    @Generated
+    @JsonProperty(value = "dimensions")
+    private Integer dimensions;
+
     /**
      * Creates an instance of EmbeddingsOptions class.
      *
@@ -115,5 +123,29 @@ public final class EmbeddingsOptions {
     @Generated
     public List<String> getInput() {
         return this.input;
+    }
+
+    /**
+     * Number of dimensions the resulting output embeddings should have.
+     * Only works for text-embedding-3 and later models.
+     *
+     * @return the embedding dimensions
+     */
+    @Generated
+    public Integer getDimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Number of dimensions the resulting output embeddings should have.
+     * Only works for text-embedding-3 and later models.
+     *
+     * @param dimensions the number of dimensions
+     * @return the embedding dimensions
+     */
+    @Generated
+    public EmbeddingsOptions setDimensions(Integer dimensions) {
+        this.dimensions = dimensions;
+        return this;
     }
 }
