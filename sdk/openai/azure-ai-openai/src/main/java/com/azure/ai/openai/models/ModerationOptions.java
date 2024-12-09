@@ -28,7 +28,7 @@ public class ModerationOptions {
      * The model id to include as part of the moderations request.
      */
     @Generated
-    @JsonProperty(value = "model;")
+    @JsonProperty(value = "model")
     private String model;
 
     /**
