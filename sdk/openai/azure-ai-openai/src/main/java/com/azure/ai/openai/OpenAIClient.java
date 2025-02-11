@@ -43,8 +43,6 @@ import com.azure.ai.openai.models.FileDeletionStatus;
 import com.azure.ai.openai.models.FileDetails;
 import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageOperationResponse;
-import com.azure.ai.openai.models.ImageOperationStatus;
 import com.azure.ai.openai.models.Moderation;
 import com.azure.ai.openai.models.ModerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;

@@ -45,14 +45,6 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
     @Generated
     private final List<String> input;
 
-    /*
-     * Number of dimensions the resulting output embeddings should have.
-     * Only works for text-embedding-3 and later models.
-     */
-    @Generated
-    @JsonProperty(value = "dimensions")
-    private Integer dimensions;
-
     /**
      * Creates an instance of EmbeddingsOptions class.
      *

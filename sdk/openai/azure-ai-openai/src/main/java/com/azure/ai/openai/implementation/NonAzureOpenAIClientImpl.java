@@ -3,9 +3,6 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ModerationOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -545,16 +542,16 @@ public final class NonAzureOpenAIClientImpl {
             RequestOptions requestOptions, Context context);
 
         @Post("/moderations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(
             value = ClientAuthenticationException.class,
-            code = {401})
+            code = { 401 })
         @UnexpectedResponseExceptionType(
             value = ResourceNotFoundException.class,
-            code = {404})
+            code = { 404 })
         @UnexpectedResponseExceptionType(
             value = ResourceModifiedException.class,
-            code = {409})
+            code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getModerations(
             @HostParam("endpoint") String endpoint,
@@ -564,16 +561,16 @@ public final class NonAzureOpenAIClientImpl {
             Context context);
 
         @Post("/moderations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(
             value = ClientAuthenticationException.class,
-            code = {401})
+            code = { 401 })
         @UnexpectedResponseExceptionType(
             value = ResourceNotFoundException.class,
-            code = {404})
+            code = { 404 })
         @UnexpectedResponseExceptionType(
             value = ResourceModifiedException.class,
-            code = {409})
+            code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getModerationsSync(
             @HostParam("endpoint") String endpoint,
@@ -3004,7 +3001,6 @@ public final class NonAzureOpenAIClientImpl {
                     requestOptions,
                     context));
     }
-
 
     /**
      * Gets moderations for the provided input. The moderations endpoint is a tool you can use to check
