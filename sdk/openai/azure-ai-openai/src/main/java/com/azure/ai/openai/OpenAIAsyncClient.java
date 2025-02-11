@@ -50,8 +50,6 @@ import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.Upload;
 import com.azure.ai.openai.models.UploadPart;
-import com.azure.ai.openai.models.ImageOperationResponse;
-import com.azure.ai.openai.models.ImageOperationStatus;
 import com.azure.ai.openai.models.Moderation;
 import com.azure.ai.openai.models.ModerationOptions;
 import com.azure.core.annotation.Generated;
@@ -1490,8 +1488,6 @@ public final class OpenAIAsyncClient {
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Moderation.class));
     }
-
-    @Generated private final OpenAIClientImpl serviceClient;
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
