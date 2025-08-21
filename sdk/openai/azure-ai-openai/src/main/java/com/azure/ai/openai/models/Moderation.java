@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * against OpenAI's usage policies.
  */
 @Immutable
-public class Moderation {
+public class Moderation implements Serializable {
     /*
      * A unique identifier associated with this chat completions response.
      */
