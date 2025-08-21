@@ -7,13 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Representation of the moderation results for the list of categories that OpenAI checks the input for.
  */
 @Immutable
-public class ModerationResults {
+public class ModerationResults implements Serializable {
     /*
      * If the input has at least one category that violates the OpenAI usage policies.
      */
