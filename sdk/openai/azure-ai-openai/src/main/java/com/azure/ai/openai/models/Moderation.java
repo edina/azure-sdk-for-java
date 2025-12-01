@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.List;
+import com.azure.core.annotation.Generated;
 
 /**
  * Representation of the response data from a moderation request. This is the result of checks of the input
@@ -16,21 +15,21 @@ import java.util.List;
  */
 @Immutable
 public class Moderation implements Serializable {
-    /*
+    /**
      * A unique identifier associated with this chat completions response.
      */
     @Generated
     @JsonProperty(value = "id")
     private String id;
 
-    /*
+    /**
      * The model name that ran this request.
      */
     @Generated
     @JsonProperty(value = "model")
     private String model;
 
-    /*
+    /**
      * The collection of moderation results.
      */
     @Generated
@@ -46,9 +45,8 @@ public class Moderation implements Serializable {
      */
     @Generated
     @JsonCreator
-    public Moderation(@JsonProperty(value = "id") String id,
-                      @JsonProperty(value = "model") String model,
-                      @JsonProperty(value = "results") List<ModerationResults> results) {
+    public Moderation(@JsonProperty(value = "id") String id, @JsonProperty(value = "model") String model,
+        @JsonProperty(value = "results") List<ModerationResults> results) {
         this.id = id;
         this.model = model;
         this.results = results;

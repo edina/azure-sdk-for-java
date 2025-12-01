@@ -419,10 +419,9 @@ public final class OpenAIClient {
      * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getModerationsWithResponse(
-            String deploymentId, BinaryData moderationsOptions, RequestOptions requestOptions) {
-        return openAIServiceClient.getModerationsWithResponse(
-                    deploymentId, moderationsOptions, requestOptions);
+    public Response<BinaryData> getModerationsWithResponse(String deploymentId, BinaryData moderationsOptions,
+        RequestOptions requestOptions) {
+        return openAIServiceClient.getModerationsWithResponse(deploymentId, moderationsOptions, requestOptions);
     }
 
     /**
@@ -854,10 +853,9 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Moderation getModerations(String deploymentId, ModerationOptions moderationOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return getModerationsWithResponse(
-                        deploymentId, BinaryData.fromObject(moderationOptions), requestOptions)
-                .getValue()
-                .toObject(Moderation.class);
+        return getModerationsWithResponse(deploymentId, BinaryData.fromObject(moderationOptions), requestOptions)
+            .getValue()
+            .toObject(Moderation.class);
     }
 
     /**

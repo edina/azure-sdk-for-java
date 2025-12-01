@@ -337,14 +337,14 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
 
     private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient(String newEndpoint) {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
-        NonAzureOpenAIClientImpl client =
-                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), newEndpoint);
+        NonAzureOpenAIClientImpl client
+            = new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), newEndpoint);
         return client;
     }
 
     private HttpPipeline createHttpPipelineNonAzureOpenAI() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -360,8 +360,8 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -370,16 +370,14 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
             policies.add(new KeyCredentialPolicy("Authorization", keyCredential, "Bearer"));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 

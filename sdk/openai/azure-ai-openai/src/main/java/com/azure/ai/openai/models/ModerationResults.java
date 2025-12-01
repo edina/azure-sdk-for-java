@@ -2,27 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.Map;
+import com.azure.core.annotation.Generated;
 
 /**
  * Representation of the moderation results for the list of categories that OpenAI checks the input for.
  */
 @Immutable
 public class ModerationResults implements Serializable {
-    /*
+    /**
      * If the input has at least one category that violates the OpenAI usage policies.
      */
     @Generated
     @JsonProperty(value = "flagged")
     private Boolean flagged;
 
-    /*
+    /**
      * A set of policy categories along with a boolean to indicate if that particular category
      * is violated.
      */
@@ -30,7 +29,7 @@ public class ModerationResults implements Serializable {
     @JsonProperty(value = "categories")
     private Map<String, Boolean> categories;
 
-    /*
+    /**
      * A set of policy categories along with a number to represent a score in the models confidence
      * that a policy has been violated between 0 and 1, with higher numbers denoting more confidence.
      */
@@ -47,8 +46,8 @@ public class ModerationResults implements Serializable {
     @Generated
     @JsonCreator
     public ModerationResults(@JsonProperty(value = "flagged") Boolean flagged,
-                             @JsonProperty(value = "categories") Map<String, Boolean> categories,
-                             @JsonProperty(value = "category_scores") Map<String, Double> categoryScores) {
+        @JsonProperty(value = "categories") Map<String, Boolean> categories,
+        @JsonProperty(value = "category_scores") Map<String, Double> categoryScores) {
         this.flagged = flagged;
         this.categories = categories;
         this.categoryScores = categoryScores;

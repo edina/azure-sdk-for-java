@@ -432,12 +432,10 @@ public final class OpenAIAsyncClient {
      * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getModerationsWithResponse(
-            String deploymentId, BinaryData moderationsOptions, RequestOptions requestOptions) {
-        return openAIServiceClient.getModerationsWithResponseAsync(
-                    deploymentId, moderationsOptions, requestOptions);
+    public Mono<Response<BinaryData>> getModerationsWithResponse(String deploymentId, BinaryData moderationsOptions,
+        RequestOptions requestOptions) {
+        return openAIServiceClient.getModerationsWithResponseAsync(deploymentId, moderationsOptions, requestOptions);
     }
-
 
     /**
      * Return the embeddings for a given prompt.
@@ -1463,6 +1461,7 @@ public final class OpenAIAsyncClient {
         return this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }
+
     /**
      * Gets moderations for the provided input. The moderations endpoint is a tool you can use to check
      * whether content complies with OpenAI's usage policies. Developers can thus identify content
@@ -1480,13 +1479,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Moderation> getModerations(
-            String deploymentId, ModerationOptions moderationOptions) {
+    public Mono<Moderation> getModerations(String deploymentId, ModerationOptions moderationOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return getModerationsWithResponse(
-                        deploymentId, BinaryData.fromObject(moderationOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(Moderation.class));
+        return getModerationsWithResponse(deploymentId, BinaryData.fromObject(moderationOptions), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Moderation.class));
     }
 
     /**

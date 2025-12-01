@@ -78,14 +78,17 @@ public final class NonAzureOpenAIClientImpl {
     public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
         this.openAiEndpoint = "https://api.openai.com/v1";
     }
 
-    public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String openAIEndpoint) {
+    public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String openAIEndpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
         this.openAiEndpoint = openAIEndpoint;
     }
 
@@ -543,41 +546,23 @@ public final class NonAzureOpenAIClientImpl {
 
         @Post("/moderations")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = { 401 })
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = { 404 })
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = { 409 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getModerations(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData moderationsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> getModerations(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData moderationsOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/moderations")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = { 401 })
-        @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = { 404 })
-        @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = { 409 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getModerationsSync(
-            @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData moderationsOptions,
-            RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> getModerationsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData moderationsOptions,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -782,8 +767,8 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
-        return FluxUtil.withContext(context -> service.getCompletions(openAiEndpoint, accept,
-            completionsOptionsUpdated, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getCompletions(openAiEndpoint, accept, completionsOptionsUpdated,
+            requestOptions, context));
     }
 
     /**
@@ -2562,8 +2547,8 @@ public final class NonAzureOpenAIClientImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpload(openAiEndpoint, contentType, accept, requestBody,
-            requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createUpload(openAiEndpoint, contentType, accept, requestBody, requestOptions, context));
     }
 
     /**
@@ -2626,8 +2611,7 @@ public final class NonAzureOpenAIClientImpl {
     public Response<BinaryData> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createUploadSync(openAiEndpoint, contentType, accept, requestBody, requestOptions,
-            Context.NONE);
+        return service.createUploadSync(openAiEndpoint, contentType, accept, requestBody, requestOptions, Context.NONE);
     }
 
     /**
@@ -2982,24 +2966,16 @@ public final class NonAzureOpenAIClientImpl {
      * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getModerationsWithResponseAsync(String modelId,
-        BinaryData moderationsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getModerationsWithResponseAsync(String modelId, BinaryData moderationsOptions,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
-        BinaryData moderationsOptionsUpdated = BinaryData.fromObject(
-            moderationsOptions.toObject(ModerationOptions.class)
-                .setModel(modelId)
-        );
+        BinaryData moderationsOptionsUpdated
+            = BinaryData.fromObject(moderationsOptions.toObject(ModerationOptions.class).setModel(modelId));
 
-        return FluxUtil.withContext(
-            context ->
-                service.getModerations(
-                    openAiEndpoint,
-                    accept,
-                    moderationsOptionsUpdated,
-                    requestOptions,
-                    context));
+        return FluxUtil.withContext(context -> service.getModerations(openAiEndpoint, accept, moderationsOptionsUpdated,
+            requestOptions, context));
     }
 
     /**
@@ -3069,20 +3045,14 @@ public final class NonAzureOpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getModerationsWithResponse(String modelId, BinaryData moderationsOptions,
-                                                           RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
-        BinaryData moderationOptionsUpdated = BinaryData.fromObject(
-            moderationsOptions.toObject(ModerationOptions.class)
-                .setModel(modelId)
-        );
+        BinaryData moderationOptionsUpdated
+            = BinaryData.fromObject(moderationsOptions.toObject(ModerationOptions.class).setModel(modelId));
 
-        return service.getModerationsSync(
-            openAiEndpoint,
-            accept,
-            moderationOptionsUpdated,
-            requestOptions,
+        return service.getModerationsSync(openAiEndpoint, accept, moderationOptionsUpdated, requestOptions,
             Context.NONE);
     }
 }
