@@ -1,4 +1,4 @@
-version=1.0.0-beta.11-edina
+version=1.0.0-beta.12-edina
 mvn deploy:deploy-file \
     -DskipTests \
     -Dfile=target/azure-ai-openai-${version}.jar \
