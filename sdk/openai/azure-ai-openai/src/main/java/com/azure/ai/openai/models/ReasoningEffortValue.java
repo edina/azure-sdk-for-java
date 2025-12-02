@@ -13,6 +13,18 @@ import java.util.Collection;
 public final class ReasoningEffortValue extends ExpandableStringEnum<ReasoningEffortValue> {
 
     /**
+     * The reasoning effort is none.
+     */
+    @Generated
+    public static final ReasoningEffortValue NONE = fromString("none");
+
+    /**
+     * The reasoning effort is none.
+     */
+    @Generated
+    public static final ReasoningEffortValue MINIMAL = fromString("minimal");
+
+    /**
      * The reasoning effort is low.
      */
     @Generated
